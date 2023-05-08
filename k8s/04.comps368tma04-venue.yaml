@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comps368tma04-venue-dply
+  namespace: comps368tma04
+  labels:
+    app: comps368tma04-venue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comps368tma04-venue
+  template:
+    metadata:
+      labels:
+        app: comps368tma04-venue
+    spec:
+      containers:
+      - image: s1039518comps368tma04.azurecr.io/venuesvc
+        name: comps368tma04-venue
+        env:
+        - name: dbSvr
+          valueFrom:
+            configMapKeyRef:
+              name: cm-comps368tma04
+              key: dbSvr
+        - name: dbUsr
+          valueFrom:
+            configMapKeyRef:
+              name: cm-comps368tma04
+              key: dbUsr              
+        - name: dbPwd
+          valueFrom:
+            secretKeyRef:
+              name: srt-comps368tma04
+              key: dbPwd       
+        ports:
+        - containerPort: 8080
+          name: comps368-venue
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: venuesvc
+  namespace: comps368tma04
+  labels:
+    app: comps368tma04-venue
+spec:
+  selector:
+    app: comps368tma04-venue
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

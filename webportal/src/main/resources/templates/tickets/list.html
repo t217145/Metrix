@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Tickets List</title>
+</head>
+<body>
+<section layout:fragment="customContent">
+    <a href="#" th:href="@{/tickets/create}" class="btn btn-primary">Sell Ticket</a> &nbsp; | &nbsp; 
+    <a href="#" th:href="@{/events/index}" class="btn btn-warning">Back</a>
+    <table class="table table-striped">
+        <tr>
+            <th>#</th>
+            <th>Event Name</th>
+            <th>Event Date</th>
+            <th>Venue</th>
+            <th>Sell Date</th>
+            <th>isClaimed</th>
+            <th>&nbsp;</th>
+        </tr>
+        <tr th:each="ticket : ${allTickets}">
+            <td th:text="${ticket.id}" />
+            <td th:text="${ticket.event.eventName}" />
+            <td th:text="${ticket.event.eventDtm}" />
+            <td th:text="${ticket.event.venue.venueName}" />
+            <td th:text="${ticket.sellDtm}" />
+            <td th:text="${ticket.isClaimed ? 'Claimed' : 'Valid'}" />
+            <td>
+                <a th:href="'javascript:getDetail(\'' + ${ticket.qrcode} + '\');'" class="btn btn-primary">Detail</a> &nbsp; | &nbsp;
+                <a th:href="@{/tickets/delete/{qrcode}(qrcode = ${ticket.qrcode})}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    </table>
+    <form action="#" th:action="@{/tickets/detail}" th:object="${ticketDetail}" method="POST" id="detailForm">
+        <input type="hidden" class="form-control" id="qrcode" th:field="*{qrcode}"/>
+    </form>
+    <script language="javascript">
+        function getDetail(qrcode){
+            document.getElementById("qrcode").value = qrcode;
+            document.getElementById("detailForm").submit();
+        }
+    </script>
+</section>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Events List</title>
+</head>
+<body>
+<section layout:fragment="customContent">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-2">
+            <a href="#" th:href="@{/events/create}" class="btn btn-primary">Create</a>         
+        </div>
+    </div>    
+    <table class="table table-striped">
+        <tr>
+            <th>#</th>
+            <th>Name </th>
+            <th>Is Start Sell</th>
+            <th>Event Date</th>
+            <th>Venue Name</th>
+            <th># of Ticket sold</th>
+            <th>&nbsp;</th>
+        </tr>
+        <tr th:each="event : ${allEvents}">
+            <td th:text="${event.id}" />
+            <td th:text="${event.eventName}" />
+            <td th:text="${event.isStartSell}" />
+            <td th:text="${event.eventDtm}" />
+            <td th:text="${event.venue.venueName}" />
+            <td>
+                <a th:href="@{/tickets/list/{id}(id = ${event.id})}" th:text="${event.tickets.size()}" />
+                
+            </td>
+            <td>
+                <a th:href="@{/events/update/{id}(id = ${event.id})}" class="btn btn-primary">Edit</a> &nbsp; | &nbsp;
+                <a th:href="@{/events/delete/{id}(id = ${event.id})}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    </table>
+</section>
+</body>
+</html>

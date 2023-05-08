@@ -1,0 +1,44 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: comps368tma04-ticket-hpa
+  namespace: comps368tma04
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: comps368tma04-ticket-dply
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 10
+---
+apiVersion: autoscaling/v2beta2 
+kind: HorizontalPodAutoscaler
+metadata:
+  name: comps368tma04-ticket-hpa-mem
+  namespace: comps368tma04
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1 
+    kind: Deployment
+    name: comps368tma04-ticket-dply
+  minReplicas: 1 
+  maxReplicas: 5 
+  metrics: 
+  - type: Resource
+    resource:
+      name: memory 
+      target:
+        type: Utilization 
+        averageValue: 180Mi
+  - type: Object
+    object:
+      metric:
+        name: requests-per-second
+      describedObject:
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        name: main-route
+      target:
+        type: Value
+        value: 300

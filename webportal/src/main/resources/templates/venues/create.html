@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Venue Create</title>
+</head>
+<body>
+<div layout:fragment="customContent">
+    <form action="#" th:action="@{/venues/create}" th:object="${newVenue}" method="POST">
+        <div class="form-group">
+            <label for="venueName">Venue Name</label>
+            <input type="text" class="form-control" id="venueName" placeholder="Venue Name" th:field="*{venueName}">
+            <span th:if="${#fields.hasErrors('venueName')}" th:errors="*{venueName}" th:errorclass="text-danger">Venue Name Error</span>
+        </div>
+        <div class="form-group">
+            <label for="venueAddr">Venue Address</label>
+            <input type="text" class="form-control" id="venueAddr" placeholder="Venue Address" th:field="*{venueAddr}">
+            <span th:if="${#fields.hasErrors('venueAddr')}" th:errors="*{venueAddr}" th:errorclass="text-danger">Venue Address Error</span>
+        </div>
+        <div class="form-group">
+            <label for="numberOfSeat">Number of Seat</label>
+            <input type="number" class="form-control" id="numberOfSeat" placeholder="1 to 100" th:field="*{numberOfSeat}">
+            <span th:if="${#fields.hasErrors('numberOfSeat')}" th:errors="*{numberOfSeat}" th:errorclass="text-danger">Number of Seat Error</span>
+        </div>   
+
+        <button type="submit" class="btn btn-primary">Create</button> &nbsp;&nbsp;&nbsp;
+        <a href="#" th:href="@{/venues/index}" class="btn btn-warning">Back</a>
+    </form>
+</div>
+</body>
+</html>

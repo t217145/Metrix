@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Ticket Detail</title>
+</head>
+<body>
+<div layout:fragment="customContent">
+    <form action="#" th:action="@{/tickets/detail}" th:object="${ticketDetail}" method="POST">
+        <div class="form-group">
+            <label for="qrcode">QR Code</label>
+            <input type="text" class="form-control" id="qrcode" placeholder="QR Code" th:field="*{qrcode}">
+            <span th:if="${#fields.hasErrors('qrcode')}" th:errors="*{qrcode}" th:errorclass="text-danger">QR Code Error</span>
+        </div>           
+        <button type="submit" class="btn btn-primary">Get</button> &nbsp;&nbsp;&nbsp;
+        <a href="#" th:href="@{/tickets/query}" class="btn btn-warning">Back</a>
+    </form>
+</div>
+</body>
+</html>

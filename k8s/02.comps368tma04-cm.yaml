@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-comps368tma04
+  namespace: comps368tma04
+data:
+  dbSvr: s1039518-comps368-tma04
+  dbUsr: s1039518
+  rmqUsr: admin

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Sell</title>
+</head>
+<body>
+<div layout:fragment="customContent">
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" th:src="@{/qrcode/generate/{qrcode}(qrcode=${ticketDetail.qrcode})}" alt="QR Code">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${ticketDetail.event.eventName}"/>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:text="${ticketDetail.event.venue.venueName}"/>
+                <li class="list-group-item" th:text="${ticketDetail.event.eventDtm}"/>
+                <li class="list-group-item" th:text="${ticketDetail.isClaimed ? 'Claimed' : 'Valid'}"/>
+                <li class="list-group-item" th:text="${ticketDetail.claimDtm}" th:unless="${ticketDetail.isClaimed == false}"/>
+            </ul>
+            <form action="#" th:action="@{/tickets/claim}" th:object="${ticketDetail}" method="POST">
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="qrcode" th:field="*{qrcode}">
+                </div>
+                <button type="submit" class="btn btn-primary">Claim</button> &nbsp;&nbsp;&nbsp;
+                <a href="#" th:href="@{/tickets/list/{eventId}(eventId = ${ticketDetail.event.id})}" class="btn btn-warning">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

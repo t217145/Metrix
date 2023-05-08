@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comps368tma04-web-dply
+  namespace: comps368tma04
+  labels:
+    app: comps368tma04-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comps368tma04-web
+  template:
+    metadata:
+      labels:
+        app: comps368tma04-web
+    spec:
+      containers:
+      - image: s1039518comps368tma04.azurecr.io/webportal
+        name: comps368tma04-web
+        env:
+        - name: dbSvr
+          valueFrom:
+            configMapKeyRef:
+              name: cm-comps368tma04
+              key: dbSvr
+        - name: dbUsr
+          valueFrom:
+            configMapKeyRef:
+              name: cm-comps368tma04
+              key: dbUsr              
+        - name: dbPwd
+          valueFrom:
+            secretKeyRef:
+              name: srt-comps368tma04
+              key: dbPwd
+        - name: rmqUsr
+          valueFrom:
+            configMapKeyRef:
+              name: cm-comps368tma04
+              key: rmqUsr              
+        - name: rmqPwd
+          valueFrom:
+            secretKeyRef:
+              name: srt-comps368tma04
+              key: rmqPwd                     
+        ports:
+        - containerPort: 8080
+          name: comps368-web
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webportal
+  namespace: comps368tma04
+  labels:
+    app: comps368tma04-web
+spec:
+  selector:
+    app: comps368tma04-web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer

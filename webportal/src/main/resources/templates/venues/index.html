@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Venues List</title>
+</head>
+<body>
+<section layout:fragment="customContent">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-2">
+            <a href="#" th:href="@{/venues/create}" class="btn btn-primary">Create</a>         
+        </div>
+    </div>    
+    <table class="table table-striped">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th># of Seat</th>
+            <th># of event held</th>
+            <th>&nbsp;</th>
+        </tr>
+        <tr th:each="venue : ${allVenues}">
+            <td th:text="${venue.id}" />
+            <td th:text="${venue.venueName}" />
+            <td th:text="${venue.venueAddr}" />
+            <td th:text="${venue.numberOfSeat}" />
+            <td th:text="${venue.events.size()}" />
+            <td>
+                <a th:href="@{/venues/update/{id}(id = ${venue.id})}" class="btn btn-primary">Edit</a> &nbsp; | &nbsp;
+                <a th:href="@{/venues/delete/{id}(id = ${venue.id})}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    </table>
+</section>
+</body>
+</html>

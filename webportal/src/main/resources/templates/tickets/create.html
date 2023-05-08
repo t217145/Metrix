@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Sell</title>
+</head>
+<body>
+<div layout:fragment="customContent">
+    <form action="#" th:action="@{/tickets/create}" th:object="${newSellForm}" method="POST">
+        <div class="form-group">
+            <label for="eventId">Event</label>
+            <select class="form-control" th:field="*{eventId}">
+                <option value="0">select event</option>
+                <option th:each="evt : ${allEvents}" th:value="${evt.id}" th:text="${evt.eventName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('eventId')}" th:errors="*{eventId}" th:errorclass="text-danger">Event Error</span>
+        </div>
+        <div class="form-group">
+            <label for="numberOfTicket">Number of Ticket</label>
+            <input type="number" class="form-control" id="numberOfTicket" placeholder="1 to 100" th:field="*{numberOfTicket}">
+            <span th:if="${#fields.hasErrors('numberOfTicket')}" th:errors="*{numberOfTicket}" th:errorclass="text-danger">Number of Ticket Error</span>
+        </div>           
+        <button type="submit" class="btn btn-primary">Create</button> &nbsp;&nbsp;&nbsp;
+        <a href="#" th:href="@{/events/index}" class="btn btn-warning">Back</a>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comps368tma04-event-dply
+  namespace: comps368tma04
+  labels:
+    app: comps368tma04-event
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comps368tma04-event
+  template:
+    metadata:
+      labels:
+        app: comps368tma04-event
+    spec:
+      containers:
+      - image: s1039518comps368tma04.azurecr.io/eventsvc
+        name: comps368tma04-event
+        env:
+        - name: dbSvr
+          valueFrom:
+            configMapKeyRef:
+              name: cm-comps368tma04
+              key: dbSvr
+        - name: dbUsr
+          valueFrom:
+            configMapKeyRef:
+              name: cm-comps368tma04
+              key: dbUsr              
+        - name: dbPwd
+          valueFrom:
+            secretKeyRef:
+              name: srt-comps368tma04
+              key: dbPwd       
+        ports:
+        - containerPort: 8080
+          name: comps368-event
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eventsvc
+  namespace: comps368tma04
+  labels:
+    app: comps368tma04-event
+spec:
+  selector:
+    app: comps368tma04-event
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

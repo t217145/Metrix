@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Events Create</title>
+</head>
+<body>
+<div layout:fragment="customContent">
+    <form action="#" th:action="@{/events/create}" th:object="${newEvent}" method="POST">
+        <div class="form-group">
+            <label for="eventName">Event Name</label>
+            <input type="text" class="form-control" id="eventName" placeholder="Event Name" th:field="*{eventName}">
+            <span th:if="${#fields.hasErrors('eventName')}" th:errors="*{eventName}" th:errorclass="text-danger">Event Name Error</span>
+        </div>
+        <div class="form-group">
+            <label for="eventDtm">Event Date</label>
+            <input type="text" class="form-control" id="eventDtm" placeholder="YYYY-MM-DD" th:field="*{eventDtm}">
+            <span th:if="${#fields.hasErrors('eventDtm')}" th:errors="*{eventDtm}" th:errorclass="text-danger">Event Name Error</span>
+        </div>
+        <div class="form-group">
+            <label for="venueId">Venue</label>
+            <select class="form-control" th:field="*{venueId}">
+                <option value="0">select venue</option>
+                <option th:each="vv : ${allVenues}" th:value="${vv.id}" th:text="${vv.venueName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('venueId')}" th:errors="*{venueId}" th:errorclass="text-danger">Venue Error</span>
+        </div>     
+
+        <button type="submit" class="btn btn-primary">Create</button> &nbsp;&nbsp;&nbsp;
+        <a href="#" th:href="@{/events/index}" class="btn btn-warning">Back</a>
+    </form>
+</div>
+</body>
+</html>

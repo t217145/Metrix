@@ -1,0 +1,7 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: comps368tma04
+  labels:
+    name: comps368tma04
+    istio-injection: enabled

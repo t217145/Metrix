@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Sold</title>
+</head>
+<body>
+<section layout:fragment="customContent">
+    <h3> Ticket Sold Success </h3>  
+    <table class="table table-striped">
+        <tr>
+            <th>#</th>
+            <th>Event Name</th>
+            <th>Event Date</th>
+            <th>Venue</th>
+            <th>Sell Date</th>
+            <th>QR Code</th>
+        </tr>
+        <tr th:each="ticket : ${ticketSold}">
+            <td th:text="${ticket.id}" />
+            <td th:text="${ticket.event.eventName}" />
+            <td th:text="${ticket.event.eventDtm}" />
+            <td th:text="${ticket.event.venue.venueName}" />
+            <td th:text="${ticket.sellDtm}" />
+            <td>
+                <img th:src="@{/qrcode/generate/{qrcode}(qrcode=${ticket.qrcode})}" alt="QR Code">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <a href="#" th:href="@{/tickets/create}" class="btn btn-warning">Back</a>
+            </td>
+        </tr>
+    </table>
+</section>
+</body>
+</html>

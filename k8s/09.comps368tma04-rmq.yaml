@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comps368tma04-rmq
+  namespace: comps368tma04
+  labels:
+    app: comps368tma04-rmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comps368tma04-rmq
+  template:
+    metadata:
+      labels:
+        app: comps368tma04-rmq
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: comps368tma04-rmq
+        image: docker.io/library/rabbitmq:3.11.2-management
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          valueFrom:
+            configMapKeyRef:
+              name: cm-comps368tma04
+              key: rmqUsr
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: srt-comps368tma04
+              key: rmqPwd          
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 15672
+          name: rabbitmq-admin
+        - containerPort: 5672
+          name: rabbitmq          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-admin
+  namespace: comps368tma04
+  labels:
+    app: comps368tma04-rmq   
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 31672
+    name: rabbitmq-admin
+    protocol: TCP
+    targetPort: 15672
+  selector:
+    app: comps368tma04-rmq    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: comps368tma04
+  labels:
+    app: comps368tma04-rmq 
+spec:
+  ports:
+  - port: 31673
+    name: rabbitmq
+    protocol: TCP
+    targetPort: 5672 
+  selector:
+    app: comps368tma04-rmq
